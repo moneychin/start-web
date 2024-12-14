@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SymbioEd</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="螢幕截圖 2024-11-25 15.11.18.png">
+    <style>
+        :root {
+            --primary-color: #23c53b;
+            --text-color: #333;
+            --bg-color: #f5f6fa;
+            --card-bg: #ffffff;
+            --gradient: linear-gradient(135deg, #23c53b, #1a9e2d);
+            --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(17, 49, 32, 0.518);
+        }
+        .dark-mode {
+            --primary-color: #23c53b;
+            --text-color: #fffffff7;
+            --bg-color: #1a1a1a;
+            --card-bg: #2a2a2a;
+            --shadow-color: #23c53b;
+            --gradient: linear-gradient(135deg, #2ecc71, #27ae60);
+            --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+        }
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            z-index: 1000; 
+            border-radius: 10px;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            text-decoration: none;
+            color:#23c53b
+        }
+        .nav-links {
+            display: flex;
+            gap: 5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        .buttons {
+            display: flex;
+            gap: 2rem;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .btn-outline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(117, 251, 76, 0.3);
+        }
+        .btn-outline2{
+            background: transparent;
+            border: 2px solid var(--text-color);
+            color: rgb(17, 219, 226);
+        }
+        .btn-outline2:hover {
+            background: rgba(80, 250, 185, 0.3);
+        }
+
+        .Sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 250px;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 1.0); /* Slightly more opaque */
+            backdrop-filter: blur(10px);
+            box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1); /* Darker shadow for depth */
+            display: none; 
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 20px; /* Add padding for spacing */
+        }
+        .Sidebar.active {
+            right: 0;
+        }
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            gap: 3rem;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-left: auto;
+        }
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        .nav-links-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .nav-item-2 {
+            position: relative;
+            padding: 0.8rem 1rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item-2:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #75FB4C;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item-2:hover {
+            background: rgba(117, 251, 76, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-item-2:hover:before {
+            width: 100%;
+        }
+
+        .nav-icon-2 {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+        .button-group-2 {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 2rem;
+        }
+
+        .btn-2 {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-outline-2 {
+            background: #75FB4C;
+            color: white;
+            border: none;
+        }
+
+        .btn-outline-2:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(117, 251, 76, 0.3);
+        }
+
+        .btn-outline2-2 {
+            background: transparent;
+            border: 2px solid #75FB4C;
+            color: #333333;
+        }
+
+        .btn-outline2-2:hover {
+            background: rgba(80, 250, 185, 0.3);
+        }
+        .menu-button-2{
+            display: none;
+        }
+        @media (max-width: 1024px) {
+            .hideOnMobile{
+                display: none;
+            }
+        }
+        @media(max-width:800px){
+            .Sidebar{
+                width: 100%;
+            }
+        }
+        @media (max-width: 1024px) {
+            .menu-button-2 {
+                display: block; /* Show on smaller screens */
+            }
+        }
+
+        #movingText {
+        position: absolute;
+        color: #44edc3;
+        font-size: 2em;
+        animation: moveText 4s infinite alternate;
+        }
+        
+        @keyframes moveText {
+            0% { top: 10%; left: 10%; }
+            50% { top: 50%; left: 50%; }
+            100% { top: 90%; left: 90%; }
+        }
+        
+        @media only screen and (max-width: 600px) {
+            #movingText {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+
+    <head>
+    <body>
+        <div id="particles-js"></div>
+
+        <nav>
+            <div class="Sidebar" id="sidebar">
+                <div class="sidebar-header">
+                <h2 style="color:rgba(35, 197, 59);">SymbioEd</h2>
+                <button class="close-btn" onclick="hideSidebar()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="#333">
+                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            
+                <div class="nav-links-2">
+                    <a href="ourservice.html" class="nav-item-2">
+                        <svg class="nav-icon-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14.5 20.7c3.3-1 5.7-4.1 5.7-7.7 0-4.4-3.6-8-8-8s-8 3.6-8 8c0 3.6 2.4 6.7 5.7 7.7l1.3-4.4c-1.1-0.3-2-1.4-2-2.6 0-1.5 1.2-2.7 2.7-2.7s2.7 1.2 2.7 2.7c0 1.2-0.9 2.3-2 2.6l1.3 4.4z"/>
+                        </svg>
+                        Our Services
+                    </a>
+                    <a href="latestnews.html" class="nav-item-2">
+                        <svg class="nav-icon-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        Latest News
+                    </a>
+                    <a href="resources.html" class="nav-item-2">
+                        <svg class="nav-icon-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+                        </svg>
+                        Resources
+                    </a>
+                    <a href="aboutus.html" class="nav-item-2">
+                        <svg class="nav-icon-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                        About Us
+                    </a>
+                </div>
+                <div class="button-group-2">
+                    <button class="btn btn-outline2-2">Login</button>
+                    <button class="btn btn-outline-2" onclick="window.location.href='https://wa.me/+85255446924'">Contact Us</button>
+                </div>
+            </div>
+            </div>
+
+            <a href="index.html" class="logo">SymbioEd</a>
+            <div class="nav-links">
+                <i class = "hideOnMobile"><a href="ourservice.html">Our Service</a></i>
+                <i class = "hideOnMobile"><a href="latestnews.html">Latest News</a></i>
+                <i class = "hideOnMobile"><a href="resources.html">Resources</a></i>
+                <i class = "hideOnMobile"><a href="aboutus.html">About Us</a></i>
+            </div>
+            <div class="buttons">
+                <i class="bx bx-moon theme-toggle" id="theme-toggle"></i>
+                <i class = "hideOnMobile"><button class="btn btn-outline2" >Login</button></i>     
+                <i class = "hideOnMobile"><button class="btn btn-outline" onclick="window.location.href='https://wa.me/+85255446924'">Contact Us</button></i>
+                <i class = "menu-button-2" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#75FB4C"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></i></a>
+            </div>
+        </nav>
+
+        <div id="movingText">Upcoming Page</div>
+
+    <script>
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+    
+            particlesJS('particles-js',
+                {
+                    "particles": {
+                        "number": {
+                            "value": 80,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#2196f3"
+                        },
+                        "shape": {
+                            "type": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.5,
+                            "random": false
+                        },
+                        "size": {
+                            "value": 3,
+                            "random": true
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#2196f3",
+                            "opacity": 0.4,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 2,
+                            "direction": "none",
+                            "random": false,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "repulse"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        }
+                    },
+                    "retina_detect": true
+                });
+    
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.classList.toggle('bx-sun');
+                themeToggle.classList.toggle('bx-moon');
+            });
+    
+            // Smooth Scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            function showSidebar(){
+                const sidebar = document.querySelector('.Sidebar');
+                if (sidebar.style.display === 'flex') {
+                    sidebar.style.display = 'none'; // Hide if already shown
+                } else {
+                    sidebar.style.display = 'flex'; // Show if hidden
+                }
+            }
+                function hideSidebar(){
+                    const sidebar = document.querySelector('.Sidebar');
+                if (sidebar.style.display === 'none') {
+                    sidebar.style.display = 'flex'; // Hide if already shown
+                } else {
+                    sidebar.style.display = 'none'; // Show if hidden
+                }
+            }
+            // Add smooth scroll behavior for navigation links
+                document.querySelectorAll('.nav-item-2').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        const href = this.getAttribute('href');
+                        if (href.startsWith('#')) {
+                            e.preventDefault();
+                            const targetElement = document.querySelector(href);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                            hideSidebar();
+                        }
+                    });
+                });
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 800) {
+                        const sidebar = document.getElementById('sidebar');
+                        sidebar.classList.remove('active'); // Hide sidebar when resizing
+                        sidebar.style.display = 'none'; // Ensure it's not displayed
+                    }
+                });
+    
+            // Counter Animation
+            function animateCounter(target, duration) {
+                const counter = document.getElementById('counter');
+                let start = 0;
+                const increment = target / (duration / 16);
+                
+                const timer = setInterval(() => {
+                    start += increment;
+                    counter.textContent = Math.floor(start).toLocaleString();
+                    
+                    if (start >= target) {
+                        clearInterval(timer);
+                        counter.textContent = target.toLocaleString();
+                    }
+                }, 16);
+            }
+    </script>
+</body>
+</html>

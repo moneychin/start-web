@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SymbioEd</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="螢幕截圖 2024-11-25 15.11.18.png">
+    <style>
+        :root {
+            --primary-color: #23c53b;
+            --text-color: #333;
+            --bg-color: #f5f6fa;
+            --card-bg: #ffffff;
+            --gradient: linear-gradient(135deg, #23c53b, #1a9e2d);
+            --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(17, 49, 32, 0.518);
+        }
+        .dark-mode {
+            --primary-color: #23c53b;
+            --text-color: #fffffff7;
+            --bg-color: #1a1a1a;
+            --card-bg: #2a2a2a;
+            --shadow-color: #23c53b;
+            --gradient: linear-gradient(135deg, #2ecc71, #27ae60);
+            --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+        }
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            z-index: 1000; 
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            text-decoration: none;
+            color:#23c53b
+        }
+        .nav-links {
+            display: flex;
+            gap: 6rem;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        .buttons {
+            display: flex;
+            gap: 2rem;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .btn-outline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(117, 251, 76, 0.3);
+        }
+        .btn-outline2{
+            background: transparent;
+            border: 2px solid var(--text-color);
+            color: rgb(17, 219, 226);
+        }
+        .btn-outline2:hover {
+            background: rgba(80, 250, 185, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-date {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .news-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            gap: 10px;
+        }
+
+        .pagination button {
+            padding: 8px 15px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .news-card {
+            cursor: pointer; /* Add pointer cursor to show clickable */
+        }
+
+        .page {
+            display: none; /* Hide all pages by default */
+        }
+
+        .page.active {
+            display: block; /* Show active page */
+        }
+
+        /* Optional: Add loading animation */
+        .page-transition {
+            animation: pageTransition 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+    </style>
+
+<head>
+    <body>
+        <div id="particles-js"></div>
+
+        <nav>
+            <a href="index.html" class="logo">SymbioEd</a>
+            <div class="nav-links">
+                <a href="ourservice.html">Our Service</a>
+                <a href="latestnews.html">Latest News</a>
+                <a href="">Resources</a>
+                <a href="">About Us</a>
+            </div>
+            <div class="buttons">
+                <i class="bx bx-moon theme-toggle" id="theme-toggle"></i>  
+                <button class="btn btn-outline2" >Login</button>          
+                <button class="btn btn-outline" onclick="window.location.href='https://wa.me/+85255446924'">Contact Us</button>
+            </div>
+        </nav>
+        <div class="container">
+            <header class="header">
+                <h1>Latest News</h1>
+            </header>
+            <div class="news-grid">
+                <a href="news1.html" class="news-card">
+                    <img src="https://picsum.photos/800/600?random=1" alt="News Image" class="news-image">
+                    <div class="news-content">                      
+                        <h2 class="news-title">Upcoming News  </h2>
+                    </div>
+                </a>
+    
+                <article class="news-card">
+                    <img src="https://picsum.photos/800/600?random=2" alt="News Image" class="news-image">
+                    <div class="news-content">
+                        <h2 class="news-title">Upcoming News</h2>                       
+                    </div>
+                </article>
+    
+            </div>
+
+            <div class="pagination">
+                <button onclick="changePage(1)">1</button>
+                <button class="active">2</button>
+            </div>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        particlesJS('particles-js',
+            {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#2196f3"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#2196f3",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    }
+                },
+                "retina_detect": true
+            });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.classList.toggle('bx-sun');
+            themeToggle.classList.toggle('bx-moon');
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        // Counter Animation
+        function animateCounter(target, duration) {
+            const counter = document.getElementById('counter');
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                counter.textContent = Math.floor(start).toLocaleString();
+                
+                if (start >= target) {
+                    clearInterval(timer);
+                    counter.textContent = target.toLocaleString();
+                }
+            }, 16);
+        }
+
+                        // Add hover effect to pagination buttons
+                document.querySelectorAll('.pagination button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                if (!button.classList.contains('active')) {
+                    button.style.background = 'var(--primary-color)';
+                    button.style.color = 'white';
+                }
+            });
+
+            button.addEventListener('mouseleave', () => {
+                if (!button.classList.contains('active')) {
+                    button.style.background = 'var(--card-bg)';
+                    button.style.color = 'var(--text-color)';
+                }
+            });
+        });
+        // Pagination functionality
+        function changePage(pageNumber) {
+            if (pageNumber === 1) {
+                window.location.href = 'latestnews.html'; // Redirect to main page
+            }
+            // You can add more pages here if needed
+        }
+    </script>
+</body>
+</html>
